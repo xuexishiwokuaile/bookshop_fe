@@ -4,7 +4,7 @@
 		<p class="rankinglistitem-text"></p>
 		<BookELImage  v-bind:book = "book" class='rankinglistitem-image'>
 		</BookELImage>
-		<p class="rankinglistitem-text" v-on:click="holdClick">{{rank+"."+book.name}}</p>
+		<p  class="rankinglistitem-text" v-on:click="holdClick">{{rank+"."+book.name}}</p>
 	</div>
 	
 	

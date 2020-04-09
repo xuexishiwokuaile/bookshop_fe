@@ -19,62 +19,63 @@ export default new Vuex.Store({
 			"authority":-1,
 			"id":""
 		},
+		mallInitalType:[],
 		"type": [{
 				"label": "未分类",
-				"value": "1"
+				"value": 1
 			},
 			{
 				"label": "文学",
-				"value": "2"
+				"value": 2
 			},
 			{
 				"label": "哲学",
-				"value": "3"
+				"value": 3
 			},
 			{
 				"label": "政治",
-				"value": "4"
+				"value": 4
 			},
 			{
 				"label": "军事",
-				"value": "5"
+				"value": 5
 			},
 			{
 				"label": "艺术",
-				"value": "6"
+				"value": 6
 			},
 			{
 				"label": "地理",
-				"value": "7"
+				"value": 7
 			},
 			{
 				"label": "科幻",
-				"value": "8"
+				"value": 8
 			},
 			{
 				"label": "悬疑",
-				"value": "9"
+				"value": 9
 			},
 			{
 				"label": "科学",
-				"value": "10"
+				"value": 10
 			},
 			{
 				"label": "其他",
-				"value": "12"
+				"value": 12
 			},
 		],
 		"hot": [{
 				"label": "未知",
-				"value": "0"
+				"value": 0
 			},
 			{
 				"label": "热门",
-				"value": "1"
+				"value": 1
 			},
 			{
 				"label": "不热门",
-				"value": "2"
+				"value": 2
 			},
 		],
 	},
@@ -85,7 +86,21 @@ export default new Vuex.Store({
 		getBookCountById:(state)=>(id)=>{
 			return state.cart.find(obj => obj.id === id).count;
 		},
-		
+		getAllTypeLabel:(state)=>{
+			return state.type.map(x => {return x.label})
+		},
+		getTypeValueByLabelArr:(state) => (labels) =>{
+			var a = [];
+			// alert(JSON.stringify(labels));
+			// alert(state)
+			for (var label of labels){
+				// alert(label);
+				// alert(state.type.find(obj => obj.label === label))
+				a.push(state.type.find(obj => obj.label === label).value )
+			}
+			// alert(a);
+			return a
+		}
 	},
 	mutations: {
 		addProductToCart(state,item){
@@ -99,6 +114,12 @@ export default new Vuex.Store({
 		},
 		setUserAuthority(state,item){
 			state.user.authority = item;
+		},
+		addMallInitalTypeItem(state,item){
+			state.mallInitalType.push(item);
+		},
+		clearMallInitalTypeItem(state){
+			state.mallInitalType=[];
 		},
 		updateBookCount(state,item){
 			var book = item.book;

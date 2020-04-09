@@ -39,6 +39,7 @@ const routes = [{
 			},
 			{
 				path: 'mall',
+				name:'Mall',
 				component: () => import('../views/mall/index.vue')
 			},
 			{
