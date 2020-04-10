@@ -49,6 +49,23 @@ const routes = [{
 		]
 	},
 	{
+		path: '/customer',
+		name: 'Customer',
+		component: () => import('../views/customer/index.vue'),
+		children:[
+			{
+				path:'history',
+				name:'History',
+				component: () => import('../views/history/index.vue')
+			},
+			{
+				path: 'information',
+				name: 'Information',
+				component: () => import('../views/information/index.vue')
+			}
+		]
+	},
+	{
 		path: '/pay',
 		name: 'Pay',
 		component: () => import('../views/pay/index.vue')
@@ -62,7 +79,12 @@ const routes = [{
 				path: 'manage',
 				name: 'Manage',
 				component: () => import('../views/manage/index.vue')
-			}
+			},
+			{
+				path: 'statistics',
+				name: 'Statistics',
+				component: () => import('../views/statistics/index.vue')
+			},
 		]
 	},
 

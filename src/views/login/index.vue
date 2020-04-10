@@ -13,7 +13,7 @@
 					</el-input>
 				</el-form-item>
 				<el-form-item class="one-button-form-item">
-					<el-button type="primary" @click="holdCustomLogin" >用户登录</el-button>
+					<el-button type="primary" @click="holdCustomerLogin" >用户登录</el-button>
 				</el-form-item>
 				<el-form-item class="two-button-form-item">
 					<el-button  @click="holdAdminLogin">管理员登录</el-button>
@@ -45,26 +45,31 @@
 			});
 		},
 		methods:{
-			// holdCustomLogin:function(){
-			// 	const axios = require('axios');
-			// 	var that = this;
-			// 	axios.get("/custom/login").then(function(response) {
-			// 		if (response.data.state == 0){
-			// 			that.$router.push("");
-			// 		}
-			// 		that.homepageData = response.data
-			// 		// alert(JSON.stringify(that.homepageData));
-			// 	})
-			// }
 			holdAdminLogin:function(){
 				const axios = require('axios');
 				var that = this;
-				axios.get("/admin/login").then(function(response) {
+				axios.post("/admin/login",{
+					id:this.account,
+					secret:this.secret
+				}).then(function(response) {
 					if (response.data.state == 0){
 						that.$store.commit("setUserId",that.account);
 						that.$store.commit("setUserAuthority",1)
-						// alert(that.$store.state.user.authority);
 						that.$router.push("/admin/manage");
+					}
+				})
+			},
+			holdCustomerLogin:function(){
+				const axios = require('axios');
+				var that = this;
+				axios.post("/admin/login",{
+					id:this.account,
+					secret:this.secret
+				}).then(function(response) {
+					if (response.data.state == 0){
+						that.$store.commit("setUserId",that.account);
+						that.$store.commit("setUserAuthority",0)
+						that.$router.push("/customer/history");
 					}
 				})
 			}

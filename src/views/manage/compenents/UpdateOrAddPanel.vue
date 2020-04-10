@@ -64,16 +64,12 @@
 		props: ["dialogFormVisible", "book"],
 		data() {
 			return {
-				
-
 				"form": {},
 				// "formLabelWidth":"auto",
 			}
 		},
 		methods: {
-			// "submit": function() {
-			// 	this.dialogFormVisible = false;
-			// }
+	
 			"handleCancel": function() {
 				this.$emit("handleCancel");
 			},

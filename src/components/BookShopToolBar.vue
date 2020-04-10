@@ -49,7 +49,7 @@
 						// break;
 						switch (this.$store.state.user.authority){
 							case 0:
-								this.$router.push("/me");
+								this.$router.push("/customer/information");
 								break;
 							case 1:
 								this.$router.push("/admin/manage");
