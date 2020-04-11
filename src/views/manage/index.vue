@@ -1,25 +1,34 @@
 <template>
 	<div class="mManage">
+		<!-- {{queryParams}} -->
+		<div style="width: 100%;">
+			<el-select v-model="type" placeholder="请选择">
+				<el-option v-for="item in this.$store.state.type" :key="item.value" :label="item.label" :value="item.value">
+				</el-option>
+			</el-select>
+			<el-select v-model="nation" placeholder="请选择" >
+				<el-option v-for="item in this.$store.state.nation" :key="item.value" :label="item.label" :value="item.value">
+				</el-option>
+			</el-select>
+			<el-select v-model="score" placeholder="请选择">
+				<el-option v-for="item in this.$store.state.score" :key="item.value" :label="item.label" :value="item.value">
+				</el-option>
+			</el-select>
+			<el-select v-model="price" placeholder="请选择">
+				<el-option v-for="item in this.$store.state.price" :key="item.value" :label="item.label" :value="item.value">
+				</el-option>
+			</el-select>
+		</div>
 		<div class="top_option_panel">
-			<!-- <el-select v-model="type" placeholder="请选择">
-				<el-option v-for="item in this.$store.state.type" :key="item.value" :label="item.label" :value="item.value">
-				</el-option>
-			</el-select>
-			<el-select v-model="hot" placeholder="请选择" style="width: 10%;">
-				<el-option v-for="item in this.$store.state.type" :key="item.value" :label="item.label" :value="item.value">
-				</el-option>
-			</el-select>
-			<el-select v-model="nation" placeholder="请选择">
-				<el-option v-for="item in this.$store.state.type" :key="item.value" :label="item.label" :value="item.value">
-				</el-option>
-			</el-select> -->
+			
+			
 			<el-button type="primary" v-on:click="handleAddBookButton">添加书籍</el-button>
 			<el-pagination layout="prev, pager, next" :total="books.length" :current-page.sync="cp" @current-change="handlePageChange">
 			</el-pagination>
 		</div>
 		<UpdateOrAddPanel v-bind:dialogFormVisible="dialogFormVisible" v-bind:book="currentbook" v-on:handleCancel="handleCancel" v-on:handleSubmit="handleSubmit"></UpdateOrAddPanel>
 		<!-- <ManageTable v-bind:bookss = "books" ></ManageTable> -->
-		<ManageTable v-bind:tablebooks="tablebooks" v-bind:books="books" v-on:handleDelete="handleDelete" v-on:handleEdit="handleEdit"></ManageTable>
+		<ManageTable  v-bind:tablebooks="tablebooks" v-bind:books="books" v-on:handleDelete="handleDelete" v-on:handleEdit="handleEdit"></ManageTable>
 
 	</div>
 
@@ -42,7 +51,25 @@
 				oldbook: {},
 				cp: 1,
 				dialogFormVisible: false,
-				// type:"",
+				type:[],
+				nation:[],
+				score:[],
+				price:[],
+			}
+		},
+		computed:{
+			queryParams:function(){
+				return {
+					type:[this.type],
+					nation:[this.nation],
+					priceRange:[this.price],
+					scoreRange:[this.score],
+				}
+			}
+		},
+		watch:{
+			queryParams:function(){
+				this.queryData();
 			}
 		},
 		methods: {
@@ -128,6 +155,16 @@
 					}
 				})
 			},
+			queryData:function(){
+				const axios = require('axios');
+				var that = this;
+				axios.post("/search",{
+					data:this.queryParams
+				}).then(function(response) {
+					that.books = response.data.books;
+					that.tablebooks = that.books.slice(0, 10);
+				})
+			}
 		},
 		created: function() {
 			var Mock = require('mockjs')
@@ -152,6 +189,16 @@
 			Mock.mock("/book/delete", {
 				"state": 0,
 				"message": "删除错误预填充文本"
+			});
+			Mock.mock("/search", {
+				"books|23": [{
+					"id|+1": 1,
+					"name": Mock.Random.cword(1, 6),
+					"intro": Mock.Random.cparagraph(2, 6),
+					"image": "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
+					"price": Mock.Random.float(0, 1000),
+					"count": Mock.Random.natural(0, 1000),
+				}]
 			})
 			const axios = require('axios');
 			var that = this;
@@ -176,6 +223,10 @@
 		margin: 20px;
 		display: flex;
 		align-items: center;
-
+	}
+	
+	.mManage .el-select{
+		width: 20%;
+		margin: 10px 1%;
 	}
 </style>

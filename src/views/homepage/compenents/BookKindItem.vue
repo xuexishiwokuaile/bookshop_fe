@@ -34,7 +34,6 @@
 				if (this.kind == "literature") return "文学";
 				if (this.kind == "philosophy") return "哲学";
 				if (this.kind == "politics") return "政治";
-				// if (this.kind == "suspense") return "悬疑";
 				if (this.kind == "military") return "军事";
 				if (this.kind == "art") return "艺术";
 				if (this.kind == "geography") return "地理";

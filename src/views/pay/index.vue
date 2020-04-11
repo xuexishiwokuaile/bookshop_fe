@@ -1,16 +1,15 @@
 <template>
 	<div class="pay">
-		{{this.$store.state.cart}}
-		<MyELInputNumber v-bind:bookid = "bookid"></MyELInputNumber>
+		<!-- {{this.$store.state.order}} -->
 		<el-card style="width: 70%; margin: 40px auto;"  body-style="display: flex; flex-direction: column; align-items: center;">
-			<PayOrderItem v-for = "n in 4" v-bind:key = "n"></PayOrderItem>
+			<PayOrderItem v-for = "orderItem in this.$store.state.order" v-bind:key = "orderItem.id" v-bind:orderItem = "orderItem"></PayOrderItem>
 			<hr style="width: 80%; margin-top: 10px; margin-bottom: 10px;">
-			<OrderSum></OrderSum>
+			<OrderSum v-bind:sum = "sum"></OrderSum>
 			<AddressSelector></AddressSelector>
 			<PayMethod></PayMethod>
 			<div class="confirm-div">
-				<el-checkbox>我已阅读相关协议</el-checkbox>
-				<el-button type="primary">确认</el-button>
+				<el-checkbox v-model="agreeContract">我已阅读相关协议</el-checkbox>
+				<el-button type="primary" v-on:click = "handleSubmit">确认</el-button>
 			</div>
 		</el-card>
 	</div>
@@ -21,11 +20,22 @@
 	import OrderSum from './components/OrderSum.vue'
 	import AddressSelector from './components/AddressSelector.vue'
 	import PayMethod from './components/PayMethod.vue'
-	import MyELInputNumber from '../trolley/components/MyELInputNumber.vue'
 	export default{
+		props:['books'],
 		data(){
 			return{
 				"bookid":"22222222",
+				"order":this.$store.state.order,
+				agreeContract:false,
+			}
+		},
+		computed:{
+			sum:function(){
+				var a = 0;
+				for (var orderItem of this.order){
+					a += orderItem.price*orderItem.count;
+				}
+				return a;
 			}
 		},
 		components:{
@@ -33,11 +43,39 @@
 			OrderSum,
 			AddressSelector,
 			PayMethod,
-			MyELInputNumber
+			// MyELInputNumber
 		},
 		created:function(){
 			var a = [{"id":"111","v":1},{"id":"222","v":2}]
 			console.log(a);
+			var Mock = require('mockjs')
+			Mock.mock("/order/makeOrder", {
+				"state": 0,
+				"message": "添加错误预填充文本"
+			});
+		},
+		methods:{
+			handleSubmit:function(){
+				var data = {
+					"orderItems":this.order.map((obj) => {
+						return {"book":obj.id, "count":obj.count}
+					}),
+					"buyer":this.$store.state.user.id
+				};
+				const axios = require('axios');
+				var that = this;
+				axios.post("/order/makeOrder",{
+					data:data
+				}).then(function(response) {
+					if (response.data.state == 0){
+						alert("购买成功");
+						that.$store.commit("updateCartAfterMakeOrder");
+						alert(JSON.stringify(that.$store.state.cart))
+						that.$router.push("Homepage");	
+					}
+				})
+			},
+			
 		}
 		
 	}

@@ -5,13 +5,9 @@
 			<el-button type="text" style="padding: 0px; font-size: large; display: inline; width: auto;" >换一批</el-button>
 		</div>
 		<el-divider style = "margin-top: 12px; margin-bottom: 12px;"></el-divider>
-		<!-- <div class="bookrecommend-imagediv">
-			<BookELImage class = "bookrecommend-image"  v-for = "book in books" v-bind:key = "book" v-bind:book = "book"></BookELImage>
-		</div> -->
 		<div class="bookrecommend-imagediv">
 			<div v-for="book in books"  v-bind:key = "book.id" class="akindofbook-bookdiv">
 				<BookELImage v-bind:book = "book" class = "akindofbook-image"></BookELImage>	
-				<!-- {{book.name}} -->
 				<BookClickTitle style="margin-top: 5px; margin-bottom: 10px;" v-bind:book = "book"></BookClickTitle>
 			</div>
 		</div>

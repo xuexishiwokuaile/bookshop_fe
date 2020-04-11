@@ -1,6 +1,6 @@
 <template>
-	<div style="width: 100%;">
-		<el-table :data="tablebooks" border style="width: 90%;" >
+	<div style="width: 100%;" >
+		<el-table :data="tablebooks" border style="width: 90%; margin: 0 auto;" >
 			<el-table-column  label="封面" width="120" align="center" header-align="center">
 				<template v-slot="scope">
 					<el-image v-bind:src = "scope.row.image" style="width: 100px; height: 100px;"></el-image>

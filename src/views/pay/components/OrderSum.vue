@@ -3,13 +3,13 @@
 		<p>总价</p>
 		<p></p>
 		<p></p>
-		<p>324元</p>
+		<p>{{sum}}元</p>
 	</div>
 </template>
 
 <script>
 	export default{
-		
+		props:["sum"]
 	}
 </script>
 

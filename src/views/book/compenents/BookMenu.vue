@@ -5,10 +5,10 @@
 			<span>数目</span>
 			<el-input-number v-model="num" @change="handleChange" :min="1" :max="10" label="描述文字" disp></el-input-number>
 		</div>
-		<div class="bookmenu-button" v-on:click="addBookToCart">
+		<div class="bookmenu-button" v-on:click="handleAddBookToCart">
 			<el-button>加入购物车</el-button>
 		</div>
-		<div class="bookmenu-button">
+		<div class="bookmenu-button" v-on:click="handleBuy">
 			<el-button>直接购买</el-button>
 		</div>
 
@@ -28,11 +28,7 @@
 			handleChange(value) {
 				console.log(value);
 			},
-			addBookToCart() {
-				// var a = this.book.cop;
-				// a.count = this.num;
-				// alert(JSON.stringify(a));
-				// alert(JSON.stringify(this.book));
+			handleAddBookToCart() {
 				this.book.count = this.num;
 				this.$store.commit("addProductToCart", this.book);
 				this.$alert('书本已添加至购物车中', '添加成功', {
@@ -41,6 +37,14 @@
 						// this.$router.back();
 					}
 				});
+			},
+			handleBuy(){
+				this.book.count = this.num;
+				this.$store.commit("updateOrder", {
+					order:[this.book],
+					orderFromCart:false
+				});
+				this.$router.push("Pay");
 			}
 		}
 	};

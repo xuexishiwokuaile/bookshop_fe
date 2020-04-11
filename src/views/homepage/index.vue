@@ -134,7 +134,6 @@
 				var a = response.data
 				// alert(JSON.stringify(a))
 				a.bookkinds = {
-					
 					"literature":response.data.literature,
 					"philosophy":response.data.philosophy,
 					"politics":response.data.politics,

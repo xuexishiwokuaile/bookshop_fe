@@ -7,8 +7,8 @@
 						<BookELImage v-bind:book = "book"  style="height: 100%;"></BookELImage>
 					</el-col>
 					<el-col :span="11" :offset="0" class="bookcard-textcol">
-						<h2 v-on:click="chooseBook(book.id)">{{book.name}}</h2>
-						<p style="margin: 0px; text-align: start;">{{book.intro}}</p>
+						<h2><BookClickTitle v-bind:book = "book"></BookClickTitle></h2>
+						<p style="margin: 0px; text-align: start;">{{book.intro}}</p>	
 					</el-col>
 				</el-row>
 			</el-carousel-item>
@@ -22,40 +22,24 @@
 	// 输出结果
 	// alert(JSON.stringify(data, null, 4))
 	import BookELImage from "../../../components/BookELImage.vue";
+	import BookClickTitle from "../../../components/BookClickTitle.vue"
 	export default {
 		props:['books'],
 		components:{
-			BookELImage
+			BookELImage,
+			BookClickTitle,
 		},
 		data() {
 			return {
-				src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-				// books: ['1', '2', '3', '4', '5'],
-				// fits: ['fill', 'contain', 'cover', 'none', 'scale-down'],
-				fits: ['fill', 'fill', 'fill', 'fill', 'fill'],
-				url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
 			}
 		},
 		methods: {
-			chooseBook: function(id) {
-				this.$router.push({name:'Book',params:{id:id}});
-				
-			}
 		}
 	}
 </script>
 
 <style>
 	.el-card {}
-
-	.el-carousel__item {
-		/* background-color: #ffffff;
-		border: 1px solid #e5e5e5;
-		width: 30%;
-		left: 10%;
-		height: 240px; */
-
-	}
 
 	.el-carousel__item h3 {
 		color: #475669;

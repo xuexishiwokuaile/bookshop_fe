@@ -33,7 +33,7 @@ const routes = [{
 				component: () => import('../views/homepage/index.vue')
 			},
 			{
-				path: 'book',
+				path: 'book/:id',
 				name:'Book',
 				component: () => import('../views/book/index.vue')
 			},
@@ -45,7 +45,13 @@ const routes = [{
 			{
 				path: 'trolley',
 				component: () => import('../views/trolley/index.vue')
-			}
+			},
+			{
+				path: 'pay',
+				name: 'Pay',
+				component: () => import('../views/pay/index.vue'),
+				// props: {books:}
+			},
 		]
 	},
 	{
@@ -65,11 +71,7 @@ const routes = [{
 			}
 		]
 	},
-	{
-		path: '/pay',
-		name: 'Pay',
-		component: () => import('../views/pay/index.vue')
-	},
+	
 	{
 		path: '/admin',
 		name: 'Admin',

@@ -56,8 +56,8 @@
 				var that = this;
 				axios.get("/statistics/getData",{
 					"params":{
-						"yType":1,
-						"timespan":1
+						"dataType":1,
+						"peroidType":1
 					}
 				}).then(function(response) {
 					// alert(JSON.stringify(response.data))

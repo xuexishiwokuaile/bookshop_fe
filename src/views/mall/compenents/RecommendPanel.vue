@@ -2,11 +2,9 @@
 	<div class="recommendpanel">
 		<h1>榜单</h1>
 		<ol>
-			<li v-for="book in books" v-bind:key = "book.id" style="position: relative; right: 10px;">{{book.name}}</li>
-<!-- 			<li>计算机网络——自顶向下方法</li>
-			<li>计算机网络——自顶向下方法</li>
-			<li>计算机网络——自顶向下方法</li>
-			<li>计算机网络——自顶向下方法</li> -->
+			<li v-for="book in books" v-bind:key = "book.id" style="position: relative; right: 10px;">
+				<BookClickTitle v-bind:book = "book"></BookClickTitle>
+			</li>
 		</ol>
 		<hr style="width: 80%; margin-top: 50px; margin-bottom: 50px;">
 		<BookFlash v-bind:book = "books[0]"></BookFlash>
@@ -16,9 +14,11 @@
 
 <script>
 	import BookFlash from './BookFlash.vue'
+	import BookClickTitle from "../../../components/BookClickTitle.vue"
 	export default{
 		components:{
 			BookFlash,
+			BookClickTitle
 		},
 		data(){
 			return{

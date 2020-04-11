@@ -10,9 +10,7 @@
 					<h2>{{book.name}}</h2>
 					<p>{{book.intro}}</p>
 				</div>
-				
 			</el-col>
-			
 		</el-row>
 	</el-card>
 </template>

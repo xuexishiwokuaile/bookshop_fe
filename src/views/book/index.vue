@@ -13,6 +13,7 @@
 	import BookMenu from "./compenents/BookMenu.vue"
 	// import MyELInputNumber from "../trolley/components/MyELInputNumber.vue"
 	export default{
+		// props:['id'],
 		components:{
 			BookCard,
 			BookMenu,
@@ -28,7 +29,7 @@
 			var Mock = require('mockjs');
 			Mock.mock(RegExp("/book/findOneById" + ".*"), {
 				"book": {
-					"id": Mock.Random.string(8),
+					"id": this.$route.params.id,
 					// "id":"11111111",
 					"name": Mock.Random.cword( 1, 6 ),
 					"intro": Mock.Random.cparagraph(2,6),
@@ -61,7 +62,5 @@
 		flex-direction: row;
 		align-items: flex-start;
 		justify-content: center;
-		
-
 	}
 </style>

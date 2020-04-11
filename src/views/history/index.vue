@@ -1,6 +1,6 @@
 <template>
 	<div class="history">
-		<OneBookOrderInfo style="width: 80%; margin: 20px auto;" v-for="order in pageOrders" v-bind:key="order.book" v-bind:order="order"></OneBookOrderInfo>
+		<OneBookOrderInfo style="width: 90%; margin-right: 20px; margin-top: 20px; margin-bottom: 20px;" v-for="order in pageOrders" v-bind:key="order.book" v-bind:order="order"></OneBookOrderInfo>
 		<el-pagination layout="prev, pager, next" :total="orders.length" :current-page.sync="cp" @current-change="handlePageChange">
 		</el-pagination>
 	</div>
@@ -61,7 +61,7 @@
 <style>
 	.history {
 		width: 100%;
-		padding-top: 50px;
+		padding-top: 30px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

@@ -1,7 +1,7 @@
 <template>
 	<div class="trolley">
 		<el-form class="trolley-form">
-			<el-button class="trolley-button">下单</el-button>
+			<el-button class="trolley-button" v-on:click="handleMakeOrder">下单</el-button>
 			<TrolleyTable></TrolleyTable>
 			<hr>
 		</el-form>
@@ -26,6 +26,16 @@
 		},
 		created:function(){
 			// alert(JSON.stringify(this.$store.state.cart))
+		},
+		methods:{
+			handleMakeOrder:function(){
+				this.$store.commit("updateOrder",{
+					order:this.$store.state.cart,
+					orderFromCart:true,
+				});
+				this.$router.push("Pay");
+				
+			}
 		}
 	}
 </script>

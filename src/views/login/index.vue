@@ -13,10 +13,10 @@
 					</el-input>
 				</el-form-item>
 				<el-form-item class="one-button-form-item">
-					<el-button type="primary" @click="holdCustomerLogin" >用户登录</el-button>
+					<el-button type="primary" @click="holdLogin" >用户登录</el-button>
 				</el-form-item>
 				<el-form-item class="two-button-form-item">
-					<el-button  @click="holdAdminLogin">管理员登录</el-button>
+					<el-button  @click="holdLogin">管理员登录</el-button>
 					<el-button  @click="holdRegister">用户注册</el-button>
 				</el-form-item>
 			</el-form>
@@ -35,41 +35,43 @@
 		},
 		created:function(){
 			var Mock = require('mockjs')
-			Mock.mock("/custom/login", {
+			Mock.mock("/register", {
 				"state": 0,
 				"message": "添加错误预填充文本"
 			});
-			Mock.mock("/admin/login", {
+			Mock.mock("/login", {
 				"state": 0,
-				"message": "添加错误预填充文本"
+				"message": 1
 			});
 		},
 		methods:{
-			holdAdminLogin:function(){
+			holdLogin:function(){
 				const axios = require('axios');
 				var that = this;
-				axios.post("/admin/login",{
+				axios.post("/login",{
 					id:this.account,
 					secret:this.secret
 				}).then(function(response) {
 					if (response.data.state == 0){
 						that.$store.commit("setUserId",that.account);
-						that.$store.commit("setUserAuthority",1)
-						that.$router.push("/admin/manage");
+						that.$store.commit("setUserAuthority",1-response.data.message)
+						that.$router.push("/customer/history");
 					}
 				})
 			},
-			holdCustomerLogin:function(){
+			holdRegister:function(){
 				const axios = require('axios');
 				var that = this;
-				axios.post("/admin/login",{
+				// alert(11);
+				axios.post("/register",{
 					id:this.account,
 					secret:this.secret
 				}).then(function(response) {
 					if (response.data.state == 0){
+						alert("注册成功")
 						that.$store.commit("setUserId",that.account);
 						that.$store.commit("setUserAuthority",0)
-						that.$router.push("/customer/history");
+						that.$router.push("/general/homepage");
 					}
 				})
 			}
