@@ -44,7 +44,7 @@
 					order:[this.book],
 					orderFromCart:false
 				});
-				this.$router.push("Pay");
+				this.$router.push("/general/pay");
 			}
 		}
 	};
@@ -53,7 +53,7 @@
 <style>
 	.bookmenu {
 		margin-left: 20px;
-		width: 20%;
+		width: 25%;
 		padding: 20px;
 		height: 300px;
 		font-size: large;

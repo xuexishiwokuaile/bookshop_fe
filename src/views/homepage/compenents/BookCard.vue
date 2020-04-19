@@ -8,7 +8,7 @@
 					</el-col>
 					<el-col :span="11" :offset="0" class="bookcard-textcol">
 						<h2><BookClickTitle v-bind:book = "book"></BookClickTitle></h2>
-						<p style="margin: 0px; text-align: start;">{{book.intro}}</p>	
+						<p style="margin: 0px; text-align: start; text-overflow: ellipsis; height: 100%; overflow: hidden;" >{{book.intro}}</p>	
 					</el-col>
 				</el-row>
 			</el-carousel-item>
@@ -91,7 +91,7 @@
 		height: 100%; 
 		display: flex;
 		flex-direction: column; 
-		
 		align-items: flex-start;
+		
 	}
 </style>

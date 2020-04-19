@@ -54,7 +54,7 @@
 			queryData:function(){
 				const axios = require('axios');
 				var that = this;
-				axios.get("/statistics/getData",{
+				axios.get(this.$store.state.baseUrl+"/statistics/getData",{
 					"params":{
 						"dataType":1,
 						"peroidType":1

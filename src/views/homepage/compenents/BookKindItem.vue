@@ -30,19 +30,7 @@
 		},
 		computed:{
 			chineseKind:function(){
-				if (this.kind == "none") return "未分类";
-				if (this.kind == "literature") return "文学";
-				if (this.kind == "philosophy") return "哲学";
-				if (this.kind == "politics") return "政治";
-				if (this.kind == "military") return "军事";
-				if (this.kind == "art") return "艺术";
-				if (this.kind == "geography") return "地理";
-				if (this.kind == "fiction") return "科幻";
-				if (this.kind == "suspense") return "悬疑";
-				if (this.kind == "science") return "科学";
-				if (this.kind == "others") return "其他";
-				return null;
-				// return this.kind
+				return this.$store.getters.getTypeCNameByEname(this.kind);
 			}
 		},
 		data(){
@@ -92,7 +80,8 @@
 	
 	.akindofbook-image{
 		width: 100%;
-		height: auto;
+		/* height: auto; */
+		height: 250px;
 	}
 	
 	.akindofbook-bookdiv{

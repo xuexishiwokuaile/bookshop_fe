@@ -9,7 +9,7 @@
 			<PayMethod></PayMethod>
 			<div class="confirm-div">
 				<el-checkbox v-model="agreeContract">我已阅读相关协议</el-checkbox>
-				<el-button type="primary" v-on:click = "handleSubmit">确认</el-button>
+				<el-button type="primary" style="width: auto;" v-on:click = "handleSubmit">确认</el-button>
 			</div>
 		</el-card>
 	</div>

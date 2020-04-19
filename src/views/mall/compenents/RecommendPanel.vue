@@ -2,7 +2,7 @@
 	<div class="recommendpanel">
 		<h1>榜单</h1>
 		<ol>
-			<li v-for="book in books" v-bind:key = "book.id" style="position: relative; right: 10px;">
+			<li v-for="book in books" v-bind:key = "book.id" style="position: relative; right: 10px; margin-bottom: 3px;">
 				<BookClickTitle v-bind:book = "book"></BookClickTitle>
 			</li>
 		</ol>
@@ -26,22 +26,14 @@
 			}
 		},
 		created:function(){
-			var Mock = require('mockjs')
-			Mock.mock("/mall/getRecommendBooks", {
-				"books|5": [{
-					"id|+1": 1,
-					"name": Mock.Random.cword(1, 6),
-					"image": "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-				}]
-			});
 			this.getRecommendBooks();
 		},
 		methods:{
 			getRecommendBooks:function(){
 				const axios = require('axios');
 				var that = this;
-				axios.get("/mall/getRecommendBooks").then(function(response) {
-					that.books = response.data.books;
+				axios.get(this.$store.state.baseUrl+"/mall").then(function(response) {
+					that.books = response.data;
 				})
 			}
 		}

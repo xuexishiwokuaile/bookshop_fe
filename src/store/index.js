@@ -13,6 +13,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
+		baseUrl: "http://188.131.217.222:8080",
 		count: 0,
 		cart: [{
 			"id": "sdsfdsf",
@@ -34,47 +35,68 @@ export default new Vuex.Store({
 		mallInitalType: [],
 		"type": [{
 				"label": "未分类",
-				"value": 1
-			},
-			{
-				"label": "文学",
-				"value": 2
-			},
-			{
-				"label": "哲学",
-				"value": 3
-			},
-			{
-				"label": "政治",
-				"value": 4
-			},
-			{
-				"label": "军事",
-				"value": 5
-			},
-			{
-				"label": "艺术",
-				"value": 6
-			},
-			{
-				"label": "地理",
-				"value": 7
-			},
-			{
-				"label": "科幻",
-				"value": 8
-			},
-			{
-				"label": "悬疑",
-				"value": 9
-			},
-			{
-				"label": "科学",
-				"value": 10
+				"value": 1,
+				"ename":"none",
 			},
 			{
 				"label": "其他",
-				"value": 12
+				"value": 2,
+				"ename":"others",
+			},
+			{
+				"label": "文学",
+				"value": 3,
+				"ename":"literature",
+			},
+			{
+				"label": "政治",
+				"value": 4,
+				"ename":"politics",
+			},
+			{
+				"label": "军事",
+				"value": 5,
+				"ename":"military",
+			},
+			{
+				"label": "艺术",
+				"value": 6,
+				"ename":"art",
+			},
+			{
+				"label": "地理",
+				"value": 7,
+				"ename":"geography",
+			},
+			{
+				"label": "科幻",
+				"value": 8,
+				"ename":"fiction",
+			},
+			{
+				"label": "悬疑",
+				"value": 9,
+				"ename":"suspense",
+			},
+			{
+				"label": "科学",
+				"value": 10,
+				"ename":"science",
+			},
+			{
+				"label": "教育",
+				"value": 11,
+				"ename":"education",
+			},
+			{
+				"label": "历史",
+				"value": 12,
+				"ename":"history",
+			},
+			{
+				"label": "哲学",
+				"value": 13,
+				"ename":"philosophy",
 			},
 		],
 		"hot": [{
@@ -196,6 +218,15 @@ export default new Vuex.Store({
 				a.push(state.type.find(obj => obj.label === label).value)
 			}
 			return a
+		},
+		getTypeObjectByValue:(state) => (value) =>{
+			return state.type.find(obj => obj.value === value);
+		},
+		getTypeCNameByEname:(state) => (ename) =>{
+			// alert(ename);
+			// var a = state.type.find(obj => obj.ename === ename);
+			// alert(a.label);
+			return state.type.find(obj => obj.ename === ename).label;
 		}
 	},
 	mutations: {

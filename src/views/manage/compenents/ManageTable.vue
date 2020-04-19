@@ -8,7 +8,7 @@
 			</el-table-column>
 
 
-			<el-table-column prop="id" label="书名" align="center" header-align="center">
+			<el-table-column prop="name" label="书名" align="center" header-align="center">
 			</el-table-column>
 			<el-table-column prop="count" label="在库数目" align="center" header-align="center">
 			</el-table-column>
@@ -16,10 +16,10 @@
 			</el-table-column>
 			<el-table-column label="操作" align="center" header-align="center">
 				<template v-slot="scope">
-					<div style="color: #67C23A; display: inline; font-size: 30px; margin-right: 30px;" >
+					<div style="color: #67C23A; display: inline; font-size: 30px; margin-right: 30px; cursor: pointer;" >
 						<i class="el-icon-edit" @click="handleEdit(scope.row)"></i>
 					</div>
-					<div style="color: #F56C6C; display: inline; font-size: 30px;">
+					<div style="color: #F56C6C; display: inline; font-size: 30px; cursor: pointer;">
 						<i class="el-icon-error" @click="handleDelete(scope.row)"></i>
 					</div>
 				</template>

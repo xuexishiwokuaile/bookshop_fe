@@ -30,8 +30,6 @@
 					case '2':
 						this.$router.push("History");
 						break;
-					
-					
 				}
 			}
 		}

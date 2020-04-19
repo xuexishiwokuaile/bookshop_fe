@@ -124,11 +124,11 @@
 			},
 			handlePageChange: function(e) {
 				// alert(e);
-				alert(this.cp);
+				// alert(this.cp);
 				this.tablebooks = this.books.slice((e - 1) * 10, e * 10);
 			},
 			handleEdit: function(e) {
-				alert(e.id);
+				// alert(e.id);
 				this.oldbook = JSON.parse(JSON.stringify(e));
 				this.currentbook = e;
 				this.dialogFormVisible = true;
@@ -168,16 +168,16 @@
 		},
 		created: function() {
 			var Mock = require('mockjs')
-			Mock.mock("/book/findAll", {
-				"books|50": [{
-					"id|+1": 1,
-					"name": Mock.Random.cword(1, 6),
-					"intro": Mock.Random.cparagraph(2, 6),
-					"image": "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-					"price": Mock.Random.float(0, 1000),
-					"count": Mock.Random.natural(0, 1000),
-				}]
-			});
+			// Mock.mock("/book/findAll", {
+			// 	"books|50": [{
+			// 		"id|+1": 1,
+			// 		"name": Mock.Random.cword(1, 6),
+			// 		"intro": Mock.Random.cparagraph(2, 6),
+			// 		"image": "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
+			// 		"price": Mock.Random.float(0, 1000),
+			// 		"count": Mock.Random.natural(0, 1000),
+			// 	}]
+			// });
 			Mock.mock("/book/add", {
 				"state": 0,
 				"message": "添加错误预填充文本"
@@ -202,8 +202,8 @@
 			})
 			const axios = require('axios');
 			var that = this;
-			axios.get("/book/findAll").then(function(response) {
-				that.books = response.data.books;
+			axios.get(this.$store.state.baseUrl+"/book/findAll").then(function(response) {
+				that.books = response.data;
 				that.tablebooks = that.books.slice(0, 10);
 			})
 		}
@@ -225,8 +225,8 @@
 		align-items: center;
 	}
 	
-	.mManage .el-select{
+	/* .mManage .el-select{
 		width: 20%;
 		margin: 10px 1%;
-	}
+	} */
 </style>

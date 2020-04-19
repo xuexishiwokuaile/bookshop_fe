@@ -1,22 +1,16 @@
 <template>
 	<div class="searchpanel">
+		{{queryParams}}
 		<div class="searchpanel-searchdiv">
 			<el-input v-model="searchText" placeholder="请输入内容" style="width: 60%;"></el-input>
 			<i class="el-icon-search" style="margin: 20px; cursor: pointer;" v-on:click="getSearchBooks"></i>
 		</div>
 		<div style="margin-left: 20px;" id = "checkboxDiv">
-			
 			<SearchCheckBoxGroup v-bind:label = "'种类'" v-bind:itemList = "typeItemList" v-bind:checkList = "typeCheckList" v-on:handleCheckListChange = "typeCheckListChange"></SearchCheckBoxGroup>
 			<SearchCheckBoxGroup v-bind:label = "'国家'" v-bind:itemList = "nationItemList" v-bind:checkList = "nationCheckList"  v-on:handleCheckListChange = "nationCheckListChange"></SearchCheckBoxGroup>
 			<SearchCheckBoxGroup v-bind:label = "'评分'" v-bind:itemList = "scoreItemList" v-bind:checkList = "scoreCheckList" v-on:handleCheckListChange = "scoreCheckListChange"></SearchCheckBoxGroup>
-
 			<SearchSlide v-bind:label = "'价格'" v-bind:checkList = "priceCheckList" v-bind:max = "priceMax"  v-on:handleCheckListChange = "priceCheckListChange"></SearchSlide>
-
 		</div>
-
-		<!-- <div class="searchpanel-imagediv">
-			<BookFlash v-for = "n in 20" v-bind:key = "n"></BookFlash>
-		</div> -->
 		<BooksTableWithPagination v-bind:books = "searchBooks" v-bind:itemcountperpage = "12"></BooksTableWithPagination>
 		
 	</div>
@@ -65,8 +59,8 @@
 			},
 			scoreRange:function(){
 				var a = [];
-				alert(JSON.stringify(a));
-				alert(JSON.stringify(this.scoreCheckList))	
+				// alert(JSON.stringify(a));
+				// alert(JSON.stringify(this.scoreCheckList))	
 				if (this.scoreCheckList.indexOf("6分以下")) {a.push([0,6])}
 				if (this.scoreCheckList.indexOf("6-7分")) {a.push([6,7])}
 				if (this.scoreCheckList.indexOf("7-8分")) {a.push([7,8])}
@@ -76,14 +70,14 @@
 			},
 		},
 		created:function(){
-			var Mock = require('mockjs')
-			Mock.mock("/mall/getSearchBooks", {
-				"books|50": [{
-					"id|+1": 1,
-					"name": Mock.Random.cword(1, 6),
-					"image": "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-				}]
-			});
+			// var Mock = require('mockjs')
+			// Mock.mock("/mall/getSearchBooks", {
+			// 	"books|50": [{
+			// 		"id|+1": 1,
+			// 		"name": Mock.Random.cword(1, 6),
+			// 		"image": "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
+			// 	}]
+			// });
 			if (this.initalType.length != 0){
 				this.typeCheckList = this.initalType;
 			} else {
@@ -115,7 +109,16 @@
 			getSearchBooks:function(){
 				const axios = require('axios');
 				var that = this;
-				axios.get("/mall/getSearchBooks").then(function(response) {
+				axios.get(this.$store.state.baseUrl+"/mall/search",{
+					params:{
+						type:this.queryParams.type,
+						nation:this.queryParams.nation,
+						price:this.queryParams.priceRange,
+						score:this.queryParams.scoreRange,
+						name:this.queryParams.nation,
+					}
+				}).then(function(response) {
+					alert(response);
 					that.searchBooks = response.data.books;
 				})
 			}

@@ -34,24 +34,26 @@
 			}
 		},
 		created:function(){
-			var Mock = require('mockjs')
-			Mock.mock("/register", {
-				"state": 0,
-				"message": "添加错误预填充文本"
-			});
-			Mock.mock("/login", {
-				"state": 0,
-				"message": 1
-			});
+			// var Mock = require('mockjs')
+			// Mock.mock("/register", {
+			// 	"state": 0,
+			// 	"message": "添加错误预填充文本"
+			// });
+			// Mock.mock("/login", {
+			// 	"state": 0,
+			// 	"message": 1
+			// });
 		},
 		methods:{
 			holdLogin:function(){
 				const axios = require('axios');
 				var that = this;
-				axios.post("/login",{
+				alert(this.$store.state.baseUrl+"/login");
+				axios.post(this.$store.state.baseUrl+"/login",{
 					id:this.account,
-					secret:this.secret
+					password:this.secret
 				}).then(function(response) {
+					alert(JSON.stringify(response.data));
 					if (response.data.state == 0){
 						that.$store.commit("setUserId",that.account);
 						that.$store.commit("setUserAuthority",1-response.data.message)
@@ -63,9 +65,12 @@
 				const axios = require('axios');
 				var that = this;
 				// alert(11);
-				axios.post("/register",{
+				axios.post(this.$store.state.baseUrl+"/user/add",{
+				// axios.post("127.0.0.1:5555"+"/user/add",{
 					id:this.account,
-					secret:this.secret
+					password:this.secret,
+					tel:"1381392080",
+					name:"l"
 				}).then(function(response) {
 					if (response.data.state == 0){
 						alert("注册成功")
