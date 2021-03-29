@@ -1,16 +1,16 @@
 <template>
 	<div class="mManage">
 		<!-- {{queryParams}} -->
-		<div style="width: 100%;">
-			<el-select v-model="type" placeholder="请选择">
+		<div style="width: 100%; padding-top: 10px;">
+			<el-select v-model="type" placeholder="请选择" style="margin-right: 10px;">
 				<el-option v-for="item in this.$store.state.type" :key="item.value" :label="item.label" :value="item.value">
 				</el-option>
 			</el-select>
-			<el-select v-model="nation" placeholder="请选择" >
+			<el-select v-model="nation" placeholder="请选择" style="margin-right: 10px;">
 				<el-option v-for="item in this.$store.state.nation" :key="item.value" :label="item.label" :value="item.value">
 				</el-option>
 			</el-select>
-			<el-select v-model="score" placeholder="请选择">
+			<el-select v-model="score" placeholder="请选择" style="margin-right: 10px;">
 				<el-option v-for="item in this.$store.state.score" :key="item.value" :label="item.label" :value="item.value">
 				</el-option>
 			</el-select>
@@ -60,10 +60,10 @@
 		computed:{
 			queryParams:function(){
 				return {
-					type:[this.type],
-					nation:[this.nation],
-					priceRange:[this.price],
-					scoreRange:[this.score],
+					type:(this.type.length == 0) ? (this.$store.getters.getAllTypeValue):[(this.type)],
+					nation:(this.nation.length == 0) ? (this.$store.getters.getAllNationValue):[this.nation],
+					price:(this.price.length == 0) ? ["0a1000000"]:[this.price],
+					score:(this.score.length == 0) ? ["0a10"]:[this.score],
 				}
 			}
 		},
@@ -86,10 +86,9 @@
 				this.dialogFormVisible = false;
 				const axios = require('axios');
 				var that = this;
+				// alert(e.id)
 				if (e.id != undefined) {
-					axios.put("/book/update", {
-						"book": that.currentbook
-					}).then(function(response) {
+					axios.put(this.$store.state.baseUrl+"/book/update", that.currentbook).then(function(response) {
 						alert(JSON.stringify(response.data, null, 4));
 						// alert("11");
 						var state = response.data.state;
@@ -103,14 +102,13 @@
 						}
 					})
 				} else {
-					axios.post("/book/add", {
-						"book": that.currentbook
-					}).then(function(response) {
+					axios.post(this.$store.state.baseUrl+"/book/add",that.currentbook).then(function(response) {
 						// alert(JSON.stringify(response.data, null, 4));
 						// // alert("11");
 						var state = response.data.state;
 						// alert(state);
 						if (state == 0) {
+							that.currentbook.id = response.data.message
 							that.books.unshift(that.currentbook);
 							that.tablebooks = that.books.slice((that.cp - 1) * 10, that.cp * 10);
 						} else {
@@ -136,15 +134,15 @@
 			handleDelete: function(e) {
 				const axios = require('axios');
 				var that = this;
-				axios.delete('/book/delete', {
-					data: { // 请求参数拼接在url上
-						id: 12
+				axios.delete(this.$store.state.baseUrl+'/book/delete', {
+					params: { // 请求参数拼接在url上
+						id: e.id
 					}
 				}).then(function(response) {
-					alert(JSON.stringify(response.data, null, 4));
+					// alert(JSON.stringify(response.data, null, 4));
 					// alert("11");
 					if (response.data.state == 0) {
-						alert("111");
+						// alert("111");
 						that.books.splice(that.books.indexOf(e), 1)
 						that.tablebooks = that.books.slice((that.cp - 1) * 10, that.cp * 10);
 					} else {
@@ -158,48 +156,22 @@
 			queryData:function(){
 				const axios = require('axios');
 				var that = this;
-				axios.post("/search",{
-					data:this.queryParams
+				// alert(JSON.stringify(this.queryParams));
+				axios.get(this.$store.state.baseUrl+"/mall/search",{
+					params:{
+						types:this.queryParams.type.join(),
+						nations:this.queryParams.nation.join(),
+						prices:this.queryParams.price.join(),
+						scores:this.queryParams.score.join(),
+						name:"",
+					}
 				}).then(function(response) {
-					that.books = response.data.books;
+					that.books = response.data;
 					that.tablebooks = that.books.slice(0, 10);
 				})
 			}
 		},
 		created: function() {
-			var Mock = require('mockjs')
-			// Mock.mock("/book/findAll", {
-			// 	"books|50": [{
-			// 		"id|+1": 1,
-			// 		"name": Mock.Random.cword(1, 6),
-			// 		"intro": Mock.Random.cparagraph(2, 6),
-			// 		"image": "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-			// 		"price": Mock.Random.float(0, 1000),
-			// 		"count": Mock.Random.natural(0, 1000),
-			// 	}]
-			// });
-			Mock.mock("/book/add", {
-				"state": 0,
-				"message": "添加错误预填充文本"
-			});
-			Mock.mock("/book/update", {
-				"state": 0,
-				"message": "编辑错误预填充文本"
-			});
-			Mock.mock("/book/delete", {
-				"state": 0,
-				"message": "删除错误预填充文本"
-			});
-			Mock.mock("/search", {
-				"books|23": [{
-					"id|+1": 1,
-					"name": Mock.Random.cword(1, 6),
-					"intro": Mock.Random.cparagraph(2, 6),
-					"image": "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-					"price": Mock.Random.float(0, 1000),
-					"count": Mock.Random.natural(0, 1000),
-				}]
-			})
 			const axios = require('axios');
 			var that = this;
 			axios.get(this.$store.state.baseUrl+"/book/findAll").then(function(response) {

@@ -1,11 +1,30 @@
 <template>
 	<div id="app">
+		<!-- <title>aaa</title> -->
 		<router-view></router-view>
 	</div>
 </template>
 
 
 <script>
+	export default{
+		created:function(){
+			const axios = require('axios');
+			var that = this;
+			axios.get(this.$store.state.baseUrl+"/mall/countries").then(function(response) {
+				// alert(JSON.stringify(response.data))
+				
+				that.$store.commit("setNation",response.data.map(obj =>{
+					return {
+						"label":obj,
+						"value":obj,
+					}
+				} ));
+				// that.xData = response.data.xData
+				// that.yData = response.data.yData
+			})
+		}
+	}
 </script>
 
 

@@ -1,8 +1,8 @@
 <template>
 	<div style="width: 100%;">
 		<div class="statistics-circlediv">
-			<div class="statistics-circle" style="background-color: #42B983;">12 册</div>
-			<div class="statistics-circle" style="background-color:cornflowerblue">1080 元</div>
+			<div class="statistics-circle" style="background-color: #42B983;">{{totalQuantity}} 册</div>
+			<div class="statistics-circle" style="background-color:cornflowerblue">{{totalSale}} 元</div>
 		</div>
 		<div class="statistics-diagramdiv">
 			<StatisticsDiagram v-bind:xData="xData" v-bind:yData="yData"></StatisticsDiagram>
@@ -32,18 +32,23 @@
 				'yData': [5, 20, 36, 10, 10, 20],
 				'timespan':0,
 				'yType':0,
+				totalQuantity:0,
+				totalSale:0,
 			}
 		},
 		components: {
 			StatisticsDiagram
 		},
 		created:function(){
-			var Mock = require('mockjs')
-			Mock.mock(RegExp("/statistics/getData" + ".*"), {
-				"xData":["2015","2016","2017","2018","2019"],
-				"yData":[302,568,496,702,687],
-			});
 			this.queryData();
+			const axios = require('axios');
+			var that = this;
+			axios.get(this.$store.state.baseUrl+"/statistics/findTotalCount").then(function(response){
+				that.totalQuantity = response.data;
+			})
+			axios.get(this.$store.state.baseUrl+"/statistics/findTotalPrice").then(function(response){
+				that.totalSale = response.data;
+			})
 		},
 		methods:{
 			handleYTypeChange:function(e){
@@ -54,15 +59,16 @@
 			queryData:function(){
 				const axios = require('axios');
 				var that = this;
-				axios.get(this.$store.state.baseUrl+"/statistics/getData",{
+				axios.get(this.$store.state.baseUrl+"/statistics/findRecent",{
 					"params":{
-						"dataType":1,
-						"peroidType":1
+						"dataType":this.yType,
+						"periodType":this.timespan,
 					}
 				}).then(function(response) {
-					// alert(JSON.stringify(response.data))
-					that.xData = response.data.xData
-					that.yData = response.data.yData
+					that.xData = response.data[0]
+					that.yData = response.data[1].map(obj =>{
+						return Number(obj);
+					})
 				})
 			},
 			handleTimeSpanChange:function(e){

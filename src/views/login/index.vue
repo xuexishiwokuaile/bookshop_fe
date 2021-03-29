@@ -48,35 +48,50 @@
 			holdLogin:function(){
 				const axios = require('axios');
 				var that = this;
-				alert(this.$store.state.baseUrl+"/login");
+				// alert(this.$store.state.baseUrl+"/login");
 				axios.post(this.$store.state.baseUrl+"/login",{
-					id:this.account,
+					name:this.account,
 					password:this.secret
 				}).then(function(response) {
-					alert(JSON.stringify(response.data));
+					// alert(JSON.stringify(response.data));
 					if (response.data.state == 0){
-						that.$store.commit("setUserId",that.account);
-						that.$store.commit("setUserAuthority",1-response.data.message)
-						that.$router.push("/customer/history");
-					}
+						that.$store.commit("setUserAuthority",1-response.data.message);
+						axios.get(that.$store.state.baseUrl+"/user/findOneByName",{
+							params:{
+								name:that.account
+							}
+						}).then(function(response) {
+							that.$store.commit("setUserId",response.data.id);
+							if (that.$store.state.user.authority == 0){
+								that.$router.push("/customer/history");
+							} else {
+								that.$router.push("/admin/manage");
+							}
+						});
+					} 
 				})
+				// axios.get(this.$store.state.baseUrl+"/login)
 			},
 			holdRegister:function(){
 				const axios = require('axios');
 				var that = this;
 				// alert(11);
 				axios.post(this.$store.state.baseUrl+"/user/add",{
-				// axios.post("127.0.0.1:5555"+"/user/add",{
-					id:this.account,
 					password:this.secret,
-					tel:"1381392080",
-					name:"l"
+					tel:"00000000000",
+					name:this.account
 				}).then(function(response) {
+					// alert(JSON.stringify(response));
 					if (response.data.state == 0){
 						alert("注册成功")
-						that.$store.commit("setUserId",that.account);
+						that.$store.commit("setUserId",response.data.message);
 						that.$store.commit("setUserAuthority",0)
 						that.$router.push("/general/homepage");
+					} else {
+						that.$notify.error({
+							title: '注册错误',
+							message: response.data.message
+						});
 					}
 				})
 			}

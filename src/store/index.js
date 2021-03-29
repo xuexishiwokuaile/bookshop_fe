@@ -15,17 +15,7 @@ export default new Vuex.Store({
 	state: {
 		baseUrl: "http://188.131.217.222:8080",
 		count: 0,
-		cart: [{
-			"id": "sdsfdsf",
-			"name": "ABook",
-			"price": 27.2,
-			"count": 3
-		}, {
-			"id": "22222222",
-			"name": "BBook",
-			"price": 31.4,
-			"count": 4
-		}],
+		cart:[],
 		order: [],
 		orderFromCart: true,
 		user: {
@@ -119,31 +109,31 @@ export default new Vuex.Store({
 			// },
 			{
 				"label": "0-50元",
-				"value": [0, 50],
+				"value": "0a50",
 			},
 			{
 				"label": "50-100元",
-				"value": [50, 100],
+				"value": "50a100",
 			},
 			{
 				"label": "100-150元",
-				"value": [100, 150],
+				"value": "100a150",
 			},
 			{
 				"label": "150-200元",
-				"value": [150, 200],
+				"value": "150a200",
 			},
 			{
 				"label": "200-250元",
-				"value": [200, 250],
+				"value": "200a250",
 			},
 			{
 				"label": "250-300元",
-				"value": [250, 300],
+				"value": "250a300",
 			},
 			{
 				"label": "300元以上",
-				"value": [300, 10000000],
+				"value": "300a10000000",
 			},
 		],
 		"score": [
@@ -153,23 +143,23 @@ export default new Vuex.Store({
 			// },
 			{
 				"label": "6分以下",
-				"value": [0, 6],
+				"value": "0a6",
 			},
 			{
 				"label": "6-7分",
-				"value": [6, 7],
+				"value": "6a7",
 			},
 			{
 				"label": "7-8分",
-				"value": [7, 8],
+				"value": "7a8",
 			},
 			{
 				"label": "8-9分",
-				"value": [8, 9],
+				"value": "8a9",
 			},
 			{
 				"label": "9-10分",
-				"value": [9, 10],
+				"value": "9a10",
 			},
 		],
 		"nation": [
@@ -212,6 +202,11 @@ export default new Vuex.Store({
 				return x.label
 			})
 		},
+		getAllTypeValue: (state) => {
+			return state.type.map(x => {
+				return x.value
+			})
+		},
 		getTypeValueByLabelArr: (state) => (labels) => {
 			var a = [];
 			for (var label of labels) {
@@ -223,11 +218,13 @@ export default new Vuex.Store({
 			return state.type.find(obj => obj.value === value);
 		},
 		getTypeCNameByEname:(state) => (ename) =>{
-			// alert(ename);
-			// var a = state.type.find(obj => obj.ename === ename);
-			// alert(a.label);
 			return state.type.find(obj => obj.ename === ename).label;
-		}
+		},
+		getAllNationValue: (state) => {
+			return state.nation.map(x => {
+				return x.value
+			})
+		},
 	},
 	mutations: {
 		addProductToCart(state, item) {
@@ -241,6 +238,9 @@ export default new Vuex.Store({
 		},
 		setUserAuthority(state, item) {
 			state.user.authority = item;
+		},
+		setNation(state,item){
+			state.nation = item;
 		},
 		addMallInitalTypeItem(state, item) {
 			state.mallInitalType.push(item);
@@ -291,14 +291,7 @@ export default new Vuex.Store({
 				// Vue.set(state.cart[index],'count',newCount)
 			}
 			console.log("state.cart[index]:" + state.cart[index].count)
-			// console.log(state.cart);
-			// var b = state.cart.find(obj => obj.id===id);
-			// b.count = newCount;
-			// Vue.set(b,'count',newCount);
-			// console.log(b.id+":"+b.count);
-			// Vue.set(b,'count',newCount);
-			// console.log(b);
-			// console.log(state.cart);
+
 		},
 		updateCart(state, item) {
 			state.cart = item;

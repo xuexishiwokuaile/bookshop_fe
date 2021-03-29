@@ -5,7 +5,7 @@
 			<PayOrderItem v-for = "orderItem in this.$store.state.order" v-bind:key = "orderItem.id" v-bind:orderItem = "orderItem"></PayOrderItem>
 			<hr style="width: 80%; margin-top: 10px; margin-bottom: 10px;">
 			<OrderSum v-bind:sum = "sum"></OrderSum>
-			<AddressSelector></AddressSelector>
+			<AddressSelector v-on:handleChange="handleAddressSelectorChange"></AddressSelector>
 			<PayMethod></PayMethod>
 			<div class="confirm-div">
 				<el-checkbox v-model="agreeContract">我已阅读相关协议</el-checkbox>
@@ -27,6 +27,7 @@
 				"bookid":"22222222",
 				"order":this.$store.state.order,
 				agreeContract:false,
+				"address":"",
 			}
 		},
 		computed:{
@@ -48,34 +49,42 @@
 		created:function(){
 			var a = [{"id":"111","v":1},{"id":"222","v":2}]
 			console.log(a);
-			var Mock = require('mockjs')
-			Mock.mock("/order/makeOrder", {
-				"state": 0,
-				"message": "添加错误预填充文本"
-			});
+			// var Mock = require('mockjs')
+			// Mock.mock("/order/makeOrder", {
+			// 	"state": 0,
+			// 	"message": "添加错误预填充文本"
+			// });
 		},
 		methods:{
 			handleSubmit:function(){
 				var data = {
-					"orderItems":this.order.map((obj) => {
+					"orderitems":this.order.map((obj) => {
 						return {"book":obj.id, "count":obj.count}
 					}),
-					"buyer":this.$store.state.user.id
+					"buyer":this.$store.state.user.id,
+					"address":this.address,
+					"price":this.sum,
 				};
 				const axios = require('axios');
 				var that = this;
-				axios.post("/order/makeOrder",{
-					data:data
-				}).then(function(response) {
+				axios.post(this.$store.state.baseUrl+"/order/addOrder",data).then(function(response) {
 					if (response.data.state == 0){
 						alert("购买成功");
 						that.$store.commit("updateCartAfterMakeOrder");
 						alert(JSON.stringify(that.$store.state.cart))
 						that.$router.push("Homepage");	
+					} else{
+						that.$notify.error({
+							title: '错误',
+							message: response.data.message
+						});
 					}
 				})
 			},
-			
+			handleAddressSelectorChange:function(e){
+				// alert(e);
+				this.address = e;
+			}
 		}
 		
 	}

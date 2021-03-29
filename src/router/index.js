@@ -30,7 +30,7 @@ const routes = [{
 		children:[
 			{
 				path:'homepage',
-				component: () => import('../views/homepage/index.vue')
+				component: () => import('../views/homepage/index.vue'),
 			},
 			{
 				path: 'book/:id',

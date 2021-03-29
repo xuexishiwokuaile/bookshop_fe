@@ -1,6 +1,6 @@
 <template>
 	<div class="searchpanel">
-		{{queryParams}}
+		<!-- {{queryParams}} -->
 		<div class="searchpanel-searchdiv">
 			<el-input v-model="searchText" placeholder="请输入内容" style="width: 60%;"></el-input>
 			<i class="el-icon-search" style="margin: 20px; cursor: pointer;" v-on:click="getSearchBooks"></i>
@@ -37,7 +37,8 @@
 				typeCheckList : [],
 				typeItemList:this.$store.getters.getAllTypeLabel,
 				nationCheckList: [],
-				nationItemList:["美国","中国","日本","意大利","韩国"],
+				// nationItemList:["美国","中国","日本","意大利","韩国"],
+				nationItemList:this.$store.getters.getAllNationValue,
 				scoreCheckList: [],
 				scoreItemList: ["6分以下","6-7分","7-8分","8-9分","9分以上"],
 				priceCheckList:[0,200],
@@ -53,31 +54,23 @@
 					"name":this.searchText,
 					"type":this.$store.getters.getTypeValueByLabelArr(this.typeCheckList),
 					"nation":this.nationCheckList,
-					"scoreRange":this.scoreRange,
-					"priceRange":[this.priceCheckList]
+					"score":this.scoreRange,
+					"price":[""+this.priceCheckList[0]+"a"+this.priceCheckList[1]]
 				}
 			},
 			scoreRange:function(){
 				var a = [];
 				// alert(JSON.stringify(a));
 				// alert(JSON.stringify(this.scoreCheckList))	
-				if (this.scoreCheckList.indexOf("6分以下")) {a.push([0,6])}
-				if (this.scoreCheckList.indexOf("6-7分")) {a.push([6,7])}
-				if (this.scoreCheckList.indexOf("7-8分")) {a.push([7,8])}
-				if (this.scoreCheckList.indexOf("8-9分")) {a.push([8,9])}
-				if (this.scoreCheckList.indexOf("8-9分")) {a.push([9,10])}
+				if (this.scoreCheckList.indexOf("6分以下") != -1) {a.push("0a6")}
+				if (this.scoreCheckList.indexOf("6-7分")!= -1) {a.push("6a7")}
+				if (this.scoreCheckList.indexOf("7-8分")!= -1) {a.push("7a8")}
+				if (this.scoreCheckList.indexOf("8-9分")!= -1) {a.push("8a9")}
+				if (this.scoreCheckList.indexOf("9分以上")!= -1) {a.push("9a10")}
 				return a;
 			},
 		},
 		created:function(){
-			// var Mock = require('mockjs')
-			// Mock.mock("/mall/getSearchBooks", {
-			// 	"books|50": [{
-			// 		"id|+1": 1,
-			// 		"name": Mock.Random.cword(1, 6),
-			// 		"image": "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-			// 	}]
-			// });
 			if (this.initalType.length != 0){
 				this.typeCheckList = this.initalType;
 			} else {
@@ -111,15 +104,15 @@
 				var that = this;
 				axios.get(this.$store.state.baseUrl+"/mall/search",{
 					params:{
-						type:this.queryParams.type,
-						nation:this.queryParams.nation,
-						price:this.queryParams.priceRange,
-						score:this.queryParams.scoreRange,
-						name:this.queryParams.nation,
+						types:this.queryParams.type.join(),
+						nations:this.queryParams.nation.join(),
+						prices:this.queryParams.price.join(),
+						scores:this.queryParams.score.join(),
+						name:this.queryParams.name,
 					}
 				}).then(function(response) {
-					alert(response);
-					that.searchBooks = response.data.books;
+					// alert(response);
+					that.searchBooks = response.data;
 				})
 			}
 		}

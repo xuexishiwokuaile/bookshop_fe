@@ -1,29 +1,37 @@
 <template>
 	<div class="information">
-		<BasicEditPanel v-bind:dialogFormVisible="dialogFormVisible" v-bind:customer = "customer" v-on:handleCancel = "handleBasicEditPanelCancel" v-on:handleSubmit = "handleBasicEditPanelSubmit"></BasicEditPanel>
-		<div class="information-basicdiv">
-			<div style="width: 50%; display: flex; justify-content: space-between; align-items: center; ">
-				<h2>基本信息</h2>
-				<div style="font-size: 20px; color: #42B983; cursor: pointer;" v-on:click="handleEditBasic">
-					<i class="el-icon-edit"></i>
-					<span>修改</span>
+		<BasicEditPanel v-bind:dialogFormVisible="basicEditPanelVisiable" v-bind:customer = "customer" v-on:handleCancel = "handleBasicEditPanelCancel" v-on:handleSubmit = "handleBasicEditPanelSubmit"></BasicEditPanel>
+		<AddressEditPanel v-bind:dialogFormVisible="addressEditPanelVisiable" v-bind:address="currentAddress" v-on:handleCancel = "handleAddressEditPanelCancel" v-on:handleSubmit = "handleAddressEditPanelSubmit"></AddressEditPanel>
+		<div style="width: 100%;  display: flex; align-items: flex-start;">
+			
+			
+			<div class="information-basicdiv">
+				<div style="width: 50%; display: flex; justify-content: space-between; align-items: center; ">
+					<h2>基本信息</h2>
+					<div style="font-size: 20px; color: #42B983; cursor: pointer;" v-on:click="handleEditBasic">
+						<i class="el-icon-edit"></i>
+						<span>修改</span>
+					</div>
+			
 				</div>
-
+				<label>用户id：{{customer.id}}</label>
+				<label>用户名：{{customer.name}}</label>
+				<label>电话号码：{{customer.tel}}</label>
 			</div>
-			<label>用户id：{{customer.id}}</label>
-			<label>用户名：{{customer.name}}</label>
-			<label>电话号码：{{customer.tel}}</label>
+			
+			<el-button style="height: 40px; margin-top: 50px" type="danger" @click="handleLogOff">退出登录</el-button>
 		</div>
+		
 		<div class="information-basicdiv">
 			<div style="width: 60%; display: flex; justify-content: space-between; align-items: center; ">
 				<h2>收获地址</h2>
-				<div style="font-size: 20px; color: crimson;">
-					<i class="el-icon-circle-plus" @click="handleAddAddress(scope.row)"></i>
+				<div style="font-size: 20px; color: crimson; cursor: pointer;" @click="handleAddressEditPanelVisible">
+					<i class="el-icon-circle-plus"></i>
 					<span>添加</span>
 				</div>
 
 			</div>
-			<AddressCard style="width: 60%;"></AddressCard>
+			<AddressCard v-for="address in addresses" v-bind:key = "address.id" v-bind:address = "address" v-on:handleRemove = "handleAddressRemove" style="width: 60%; margin-bottom: 10px;" ></AddressCard>
 		</div>
 	</div>
 </template>
@@ -31,48 +39,75 @@
 <script>
 	import AddressCard from './components/AddressCard.vue'
 	import BasicEditPanel from './components/BasicEditPanel.vue'
+	import AddressEditPanel from './components/AddressEditPanel.vue' 
 	export default {
 		components: {
 			AddressCard,
-			BasicEditPanel
+			BasicEditPanel,
+			AddressEditPanel,
 		},
 		data() {
 			return {
-				dialogFormVisible: false,
-				customer: {}
+				basicEditPanelVisiable: false,
+				addressEditPanelVisiable:false,
+				customer: {},
+				currentAddress:{},
+				addresses:{},
 			}
 		},
 		created: function() {
-			var Mock = require('mockjs')
-			Mock.mock("/user/findOneById", {
-				"User": {
-					"id": "2391",
-					"name": "云天明",
-					"tel": "12782930424",
-					"authority": 0
-				}
-			});
 			var that = this;
 			const axios = require('axios');
-			axios.get("/user/findOneById",{
+			axios.get(this.$store.state.baseUrl+"/user/findOneById",{
 				params:{
-					id:that.$store.state.id
+					id:that.$store.state.user.id
 				}
 			}).then(function(response) {
 				// alert(JSON.stringify(response.data))
-				that.customer = response.data.User;
+				that.customer = response.data;
+			});
+			axios.get(this.$store.state.baseUrl+"/address/findUserAddress",{
+				params:{
+					user:that.$store.state.user.id
+				}
+			}).then(function(response){
+				// alert(JSON.stringify(response.data))
+				that.addresses = response.data;
 			})
 		},
 		methods: {
 			handleEditBasic() {
-				this.dialogFormVisible = true;
+				this.basicEditPanelVisiable = true;
 			},
 			handleBasicEditPanelCancel(){
-				this.dialogFormVisible = false;
+				this.basicEditPanelVisiable = false;
 			},
 			handleBasicEditPanelSubmit(e){
 				this.customer = e;
-				this.dialogFormVisible = false;
+				this.basicEditPanelVisiable = false;
+			},
+			handleAddressEditPanelVisible(){
+				this.currentAddress = {};
+				this.addressEditPanelVisiable = true;
+			},
+			handleAddressRemove(e){
+				// alert(JSON.stringify(e));
+				this.addresses.splice(this.addresses.indexOf(e), 1);
+				// alert(JSON.stringify(this.addresses))
+			},
+			handleAddressEditPanelCancel(){
+				this.addressEditPanelVisiable = false;
+			},
+			handleAddressEditPanelSubmit(e){
+				// alert(JSON.stringify(e));
+				this.addresses.push(e);
+				this.addressEditPanelVisiable = false;
+				// alert(1);
+			},
+			handleLogOff(){
+				this.$store.commit("setUserId","");
+				this.$store.commit("setUserAuthority",-1);
+				this.$router.push("../general/homepage");
 			}
 			
 		}

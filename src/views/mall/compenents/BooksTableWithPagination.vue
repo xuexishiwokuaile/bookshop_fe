@@ -3,7 +3,7 @@
 		<div class="searchpanel-booksdiv">
 			<BookFlash v-for="book in tablebooks" v-bind:key="book.id" v-bind:book = "book"></BookFlash>
 		</div>
-		<el-pagination layout="prev, pager, next" :total="books.length" :current-page.sync="cp">
+		<el-pagination layout="prev, pager, next" :total="books.length" :current-page.sync="cp" :page-size = "itemcountperpage">
 		</el-pagination>
 
 	</div>
@@ -26,6 +26,11 @@
 		computed: {
 			tablebooks: function() {
 				return this.books.slice((this.cp - 1) * this.itemcountperpage, this.cp * this.itemcountperpage)
+			}
+		},
+		watch:{
+			books:function(){
+				this.cp = 1;
 			}
 		},
 		created: function() {

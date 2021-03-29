@@ -2,7 +2,7 @@
 	<div class="bookrecommend">
 		<div class="bookrecommend-titlediv">
 			<h1 class="bookrecommend-title">推荐/猜你喜欢</h1>
-			<el-button type="text" style="padding: 0px; font-size: large; display: inline; width: auto;" >换一批</el-button>
+			<el-button type="text" style="padding: 0px; font-size: large; display: inline; width: auto;" v-on:click = "handleAnother" >换一批</el-button>
 		</div>
 		<el-divider style = "margin-top: 12px; margin-bottom: 12px;"></el-divider>
 		<div class="bookrecommend-imagediv">
@@ -26,6 +26,21 @@
 		},
 		data(){
 			return{
+				index:0
+			}
+		},
+		methods:{
+			handleAnother:function(){
+				this.index++;
+				const axios = require('axios');
+				var that = this;
+				axios.get(this.$store.state.baseUrl+"/index/another",{
+					params:{
+						index:this.index
+					}
+				}).then(function(response){
+					that.books = response.data;
+				})
 			}
 		}
 	}

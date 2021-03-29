@@ -10,7 +10,7 @@
 
 			<el-table-column prop="name" label="书名" align="center" header-align="center">
 			</el-table-column>
-			<el-table-column prop="count" label="在库数目" align="center" header-align="center">
+			<el-table-column prop="author" label="作者" align="center" header-align="center">
 			</el-table-column>
 			<el-table-column prop="price" label="单价" align="center" header-align="center">
 			</el-table-column>

@@ -53,8 +53,8 @@
 			</div>
 		</el-form>
 		<div slot="footer" class="dialog-footer">
-			<el-button @click="handleCancel">取 消</el-button>
-			<el-button type="primary" @click="handleSubmit">确 定</el-button>
+			<el-button @click="handleCancel" style="width: auto;">取 消</el-button>
+			<el-button type="primary" @click="handleSubmit" style="width: auto;">确 定</el-button>
 		</div>
 	</el-dialog>
 </template>
@@ -74,6 +74,8 @@
 				this.$emit("handleCancel");
 			},
 			"handleSubmit": function() {
+				this.book.price = Number(this.book.price);
+				this.book.score = Number(this.book.score);
 				if ((this.book.score<0) || (this.book.score>10)){
 					this.$notify.error({
 						title: '评分错误',

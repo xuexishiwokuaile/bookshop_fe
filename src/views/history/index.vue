@@ -24,22 +24,26 @@
 			}
 		},
 		created: function() {
-			var Mock = require('mockjs')
-			Mock.mock("/history/getHistory", {
-				"orders|25": [{
-					"book|+1": 1,
-					"name": Mock.Random.cword(1, 6),
-					"image": "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-					"price": Mock.Random.float(0, 1000),
-					"count": Mock.Random.natural(0, 1000),
-					"time":Mock.Random.date()
-				}]
-			});
+			// var Mock = require('mockjs')
+			// Mock.mock("/history/getHistory", {
+			// 	"orders|25": [{
+			// 		"book|+1": 1,
+			// 		"name": Mock.Random.cword(1, 6),
+			// 		"image": "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
+			// 		"price": Mock.Random.float(0, 1000),
+			// 		"count": Mock.Random.natural(0, 1000),
+			// 		"time":Mock.Random.date()
+			// 	}]
+			// });
 			var that = this;
 			const axios = require('axios');
-			axios.get("/history/getHistory").then(function(response) {
+			axios.get(this.$store.state.baseUrl+"/history/findHistoryDetailsByUser",{
+				params:{
+					user:that.$store.state.user.id
+				}
+			}).then(function(response) {
 				// alert(JSON.stringify(response.data))
-				that.orders = response.data.orders;
+				that.orders = response.data;
 			})
 		},
 		methods:{

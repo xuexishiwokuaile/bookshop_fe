@@ -17,16 +17,15 @@
 		mounted() {
 			this.drawLine();
 		},
-		// watch:{
-		// 	xData:function(){
-		// 		// alert("11")
-		// 		this.drawLine()
-		// 	},
-		// },
+		watch:{
+			xData:function(){
+				// alert("11")
+				this.drawLine()
+			},
+		},
 		methods: {
 			drawLine() {
 				// 基于准备好的dom，初始化echarts实例
-				
 				let myChart = echarts.init(document.getElementById('myChart'))
 				// 绘制图表
 				myChart.setOption({

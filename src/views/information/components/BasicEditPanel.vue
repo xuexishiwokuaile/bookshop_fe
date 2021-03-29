@@ -40,11 +40,16 @@
 				
 				const axios = require('axios');
 				var that = this;
-				axios.put("/user/update",{
+				axios.put(this.$store.state.baseUrl+"/user/update",{
 					id:that.$store.state.id
 				}).then(function(response) {
 					if (response.data.state == 0){
 						that.$emit("handleSubmit",that.customer)
+					} else {
+						that.$notify.error({
+							title: '修改错误',
+							message: response.data.message
+						});
 					}
 					
 				})

@@ -48,7 +48,7 @@
 					id:this.$route.params.id
 				}
 			}).then(function(response) {
-				alert(JSON.stringify(response.data, null, 4));
+				// alert(JSON.stringify(response.data, null, 4));
 				that.book = response.data
 				
 			})
